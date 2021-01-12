@@ -16,6 +16,8 @@ https://github.com/ruby/openssl
 - libs/signature.rb (Amazon Pay API呼出用)
 - keys/keyinfo.rb (設定値定義用)
 
+Note: 本アプリケーションで利用されていないAPIの呼び出し方については、「libs/signature.rb」のコメントを参考にして下さい。
+
 ## インストール
 
 ### リポジトリのclone
