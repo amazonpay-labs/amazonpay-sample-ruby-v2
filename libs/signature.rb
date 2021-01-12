@@ -95,7 +95,7 @@ class AmazonPayClient
         signed_headers = @helper.signed_headers(method, uri, request.body, headers, query)
         signed_headers.each { |k, v| request[k] = v }
 
-        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
             http.request(request)
         end
     end

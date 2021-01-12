@@ -42,8 +42,11 @@ bundle install
 
 #### RubyGemsを使用する場合
 ```sh
-# Note: 上記「動作環境」でも述べたとおり、Rubyのバージョンが 2.5.0 未満の場合、「openssl」のGemを下記指示にしたがって更新する必要があります。
-# https://github.com/ruby/openssl
+# 注意！ ↓↓↓ Rubyのバージョンが2.5.0未満の場合のみ ↓↓↓
+gem install openssl
+# 注意！ ↑↑↑ Rubyのバージョンが2.5.0未満の場合のみ ↑↑↑
+# また、https://github.com/ruby/openssl にも書かれている通り、2.3の場合には更にソースで「gem 'openssl'」を実行してgemを有効化する必要もあります。
+# 本アプリケーションでは、libs/signature.rbのコードの先頭でこの処理を実行しています。
 
 gem install sinatra
 ```
