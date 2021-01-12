@@ -10,7 +10,7 @@ Note: For less than 2.5.0, you have to update the gem of openssl by following th
     https://github.com/ruby/openssl  
 
 # How to use  
-Instantiate AmazonPayClient like below:  
+At first, instantiate AmazonPayClient like below:  
 
 ```ruby
     client = AmazonPayClient.new {
@@ -40,11 +40,11 @@ Example:
 ## Others
 
 Invoke 'call_api' method specifying the parameters below:  
- - URL fragment: the last part of the URL of the API. ex) 'checkoutSessions' if the URL is 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/'
- - HTTP method: the HTTP method of the API.
+ - url_fragment: the last part of the URL of the API. ex) 'checkoutSessions' if the URL is 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/'
+ - method: the HTTP method of the API.
  - (Optional) payload: the request payload of the API. You can specify either JSON string or Hash instance. 
  - (Optional) headers: the HTTP headers of the API. ex) {header1: 'value1', header2: 'value2'}
- - (Optional) query parameters: the query parameters of the API. ex) {param1: 'value1', param2: 'value2'}  
+ - (Optional) query_params: the query parameters of the API. ex) {param1: 'value1', param2: 'value2'}  
  The response of the API call is returned.  
 
 Example 1: Create Checkout Session (http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#create-checkout-session)  

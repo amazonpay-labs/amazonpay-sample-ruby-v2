@@ -11,13 +11,6 @@ https://github.com/ruby/openssl
 本アプリケーションでは、下記のようにAmazon Payでの購入の単純なFlowを実行するサンプルを提供しています。  
 <img src="images/checkout-flow.gif" width="500">  
 
-主に下記の３つのrbファイルで構成されています。  
-- app.rb (Webアプリ本体)
-- libs/signature.rb (Amazon Pay API呼出用)
-- keys/keyinfo.rb (設定値定義用)
-
-Note: 本アプリケーションで利用されていないAPIの呼び出し方については、「libs/signature.rb」のコメントを参考にして下さい。
-
 ## インストール
 
 ### リポジトリのclone
@@ -62,3 +55,75 @@ ruby app.rb
 ```
 
 [http://localhost:4567/](http://localhost:4567/) にアクセスして、動作を確認します。
+
+# 本アプリケーションの構成
+
+本アプリケーションは主に下記3つのrbファイルで構成されています。  
+
+## app.rb
+Webアプリの本体です。[Sinatra](http://sinatrarb.com/)で実装されており、100行弱程度です。
+
+## keys/keyinfo.rb
+各種設定値のみが定義された設定ファイルです。
+
+## libs/signature.rb
+Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約120行あります。  
+ファイルの先頭にサンプルコードの使い方を英語で示しており、下記はその日本語訳です。 
+
+--- 
+
+最初に、下記のようにAmazonPayClientをインスタンス化します。:  
+```ruby
+    client = AmazonPayClient.new {
+        public_key_id: 'XXXXXXXXXXXXXXXXXXXXXXXX', # SellerCentralで取得したpublick key ID
+        private_key: File.read('./privateKey.pem'), # SellerCentralで取得したprivate key
+        region: 'jp', # 'na', 'eu', 'jp'が指定できます
+        sandbox: true
+    }
+```
+
+### ボタンのSignatureを生成する場合
+下記パラメタを指定して、'generate_button_signature'を呼び出します。
+ - payload: APIに渡すpayload。JSON string でも Hashインスタンス でも可。  
+
+参照: http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/add-the-amazon-pay-button.html#3-sign-the-payload
+
+例:  
+```ruby
+    signature = client.generate_button_signature {
+        webCheckoutDetails: {
+            checkoutReviewReturnUrl: 'http://example.com/review'
+        },
+        storeId: 'amzn1.application-oa2-client.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    }
+```
+
+### その他のAPIの呼び出し
+
+下記パラメタを指定して、'call_api'を呼び出します。  
+ - url_fragment: API呼出のURLの末尾部分。 例) 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/' の場合、「checkoutSessions」
+ - method: API呼出のHTTP method
+ - (Optional) payload: API呼出のrequest payload。JSON string でも Hashインスタンス でも可。  
+ - (Optional) headers: API呼出のHTTP header。 例) {header1: 'value1', header2: 'value2'}
+ - (Optional) query_params: API呼出のquery parameter。 例) {param1: 'value1', param2: 'value2'}  
+ API呼出のresponseが返却される。  
+
+例1: [Create Checkout Session](http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#create-checkout-session)  
+
+```ruby
+    response = client.api_call ("checkoutSessions", "POST",
+        payload: {
+            webCheckoutDetails: {
+                checkoutReviewReturnUrl: "https://example.com/review"
+            },
+            storeId: "amzn1.application-oa2-client.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        headers: {'x-amz-pay-idempotency-key': SecureRandom.hex(10)}
+    )
+```
+
+例2: [Get Checkout Session](http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#get-checkout-session)  
+
+```ruby
+    response = client.api_call ("checkoutSessions/#{amazon_checkout_session_id}", 'GET')
+```
