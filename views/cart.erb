@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0">
+    <meta name="google" content="notranslate"/>
+
+    <title>Amazon Pay Sample</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/shop-confirmation.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    
+</head>
+<body data-gr-c-s-loaded="true">
+<div id="white_cover" style="width:100%; height:100vh; background-color:#fff; position:relative; z-index:1000; display:none;"></div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8">
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <p id="error" class="text-danger"></p>
+                    <h5 class="card-title">購入画面</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">商品名</th>
+                            <th scope="col">単価</th>
+                            <th scope="col" class="text-center">数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><img class="confirmation-item" src="/static/sample/img/echoshow10.jpeg"></td>
+                            <td class="text-right">Echo Show 10 (エコーショー10)</td>
+                            <td class="text-right">￥29,980</td>
+                            <td class="text-right">1</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div id="AmazonPayButton" style="text-align:center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://static-fe.payments-amazon.com/checkout.js"></script>
+<script type="text/javascript">
+    amazon.Pay.renderButton('#AmazonPayButton', {
+        merchantId: '<%= merchant_id %>',
+        ledgerCurrency: 'JPY', // Amazon Pay account ledger currency
+        sandbox: true, // dev environment
+        checkoutLanguage: 'ja_JP', // render language
+        productType: 'PayAndShip', // checkout type
+        placement: 'Cart', // button placement
+        buttonColor: 'Gold',
+        createCheckoutSessionConfig: {
+            payloadJSON: '<%= payload %>', // string generated in step 2
+            signature: '<%= signature %>', // signature generated in step 3
+            publicKeyId: '<%= public_key_id %>' 
+        }
+    });
+</script>
+
+</body>
+</html>
