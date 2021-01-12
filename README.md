@@ -21,7 +21,7 @@ https://github.com/ruby/openssl
 ### リポジトリのclone
 本リポジトリをcloneします。  
 ```
-git clone https://github.com/amazonpay-labs/amazonpay-sample-app-v2.git
+git clone https://github.com/amazonpay-labs/amazonpay-sample-ruby-v2.git
 ```
 
 ### Seller Centralでのアプリケーション作成・設定
