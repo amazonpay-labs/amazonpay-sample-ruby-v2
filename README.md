@@ -9,7 +9,7 @@ https://github.com/ruby/openssl
 
 ## 概要
 本アプリケーションでは、下記のようにAmazon Payでの購入の単純なFlowを実行するサンプルを提供しています。  
-<img src="images/checkout-flow.gif" width="500">  
+<img src="images/checkout-flow.gif" width="350">  
 
 ## インストール
 
