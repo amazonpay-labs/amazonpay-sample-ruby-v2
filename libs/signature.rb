@@ -141,13 +141,13 @@ class AmazonPayClient
         def signed_headers(method, uri, payload, user_headers, query)
             payload = '' if uri.path.include?('account-management/v2/accounts')
     
-            headers = Hash[user_headers.map{|k, v| [k.to_s, v.gsub(/\s+/, ' ')]}]
+            headers = Hash[user_headers.map{|k, v| [k.to_s.downcase, v.gsub(/\s+/, ' ')]}]
             headers['accept'] = headers['content-type'] = 'application/json'
             headers['x-amz-pay-region'] = @region
             headers['x-amz-pay-date'] = formatted_timestamp
             headers['x-amz-pay-host'] = uri.host
     
-            canonical_headers = Hash[ headers.map{|k, v| [k.to_s.downcase, v]}.sort_by { |kv| kv[0] } ]
+            canonical_headers = Hash[ headers.sort_by{|k, v| k} ]
             canonical_header_names = canonical_headers.keys.join(';')
             canonical_request = <<~END.strip
                 #{method}
