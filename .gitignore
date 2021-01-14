@@ -5,3 +5,4 @@ keys/privateKey.pem
 *.swp
 !.gitkeep
 .DS_Store
+Thumbs.db

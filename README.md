@@ -8,23 +8,30 @@ Note: 2.5.0 未満の場合、「openssl」のGemを下記指示にしたがっ�
 https://github.com/ruby/openssl  
 
 ## 概要
-本アプリケーションでは、下記のようにAmazon Payでの購入の単純なFlowを実行するサンプルを提供しています。  
+本アプリケーションでは、下記のようにAmazon Payでの単純な購入フローを実行するサンプルを提供しています。  
+
 <img src="images/checkout-flow.gif" width="350">  
 
 ## インストール
 
 ### リポジトリのclone
 本リポジトリをcloneします。  
-```
+```sh
 git clone https://github.com/amazonpay-labs/amazonpay-sample-ruby-v2.git
+
+# cloneしたリポジトリへ移動
+cd amazonpay-sample-ruby-v2
 ```
 
 ### Seller Centralでのアプリケーション作成・設定
-keys/template ディレクトリ下の、
-  - keyinfo.rb  
-  - privateKey.pem
+下記コマンドにて、Rubyスクリプトを実行します。  
+```sh
+ruby keys/init.rb
+```
 
-を一階層上の keys ディレクトリ直下にコピーします。  
+keysディレクトリ配下に、下記のファイルが生成されます。  
+  - keyinfo.rb  
+  - privateKey.pem  
 
 [Seller Central](https://sellercentral.amazon.co.jp/)にて、本サンプル用にアプリケーションを用意し、[こちら](https://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/get-set-up-for-integration.html#4-get-your-public-key-id)を参考に、Merchant ID, Public Key ID, Store ID, Private Keyを取得し、それぞれ下記にコピーします。
   * Merchant ID: keys/keyinfo.rb の merchant_id
