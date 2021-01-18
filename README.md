@@ -92,7 +92,7 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
     }
 ```
 
-### ボタンのSignatureを生成する場合
+### Amazon PayボタンのSignatureの生成
 下記パラメタを指定して、'generate_button_signature'を呼び出します。
  - payload: APIに渡すpayload。JSON string でも Hashインスタンス でも可。  
 
@@ -116,7 +116,8 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
  - (Optional) payload: API呼出のrequest payload。JSON string でも Hashインスタンス でも可。  
  - (Optional) headers: API呼出のHTTP header。 例) {header1: 'value1', header2: 'value2'}
  - (Optional) query_params: API呼出のquery parameter。 例) {param1: 'value1', param2: 'value2'}  
- API呼出のresponseが返却される。  
+
+Amazon Pay API呼出結果のresponseが返却されます。  
 
 例1: [Create Checkout Session](http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#create-checkout-session)  
 
