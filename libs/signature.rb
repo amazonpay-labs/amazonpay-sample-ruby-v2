@@ -149,7 +149,7 @@ class AmazonPayClient
     
             canonical_headers = Hash[ headers.map{|k, v| [k.to_s.downcase, v]}.sort_by { |kv| kv[0] } ]
             canonical_header_names = canonical_headers.keys.join(';')
-            canonical_request = <<~END.strip
+            canonical_request = <<~END.chomp
                 #{method}
                 #{uri.path}
                 #{query}
