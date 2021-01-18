@@ -7,7 +7,7 @@ require 'securerandom'
 
 config = {
     region: 'jp',
-    public_key_id: KEY_INFO[:public_key_id],
+    public_key_id: KeyInfo::PUBLIC_KEY_ID,
     private_key: File.read('./keys/privateKey.pem'),
     sandbox: true
 }
@@ -23,13 +23,13 @@ get '/cart' do
         webCheckoutDetails: {
             checkoutReviewReturnUrl: 'http://localhost:4567/review'
         },
-        storeId: KEY_INFO[:store_id]
+        storeId: KeyInfo::STORE_ID
     })
     erb :cart, locals: {
-        merchant_id: KEY_INFO[:merchant_id],
+        merchant_id: KeyInfo::MERCHANT_ID,
         payload: payload,
         signature: client.generate_button_signature(payload), # Sign the payload
-        public_key_id: KEY_INFO[:public_key_id]
+        public_key_id: KeyInfo::PUBLIC_KEY_ID
     }
 end
 

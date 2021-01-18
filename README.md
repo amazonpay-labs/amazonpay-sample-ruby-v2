@@ -34,9 +34,9 @@ keysディレクトリ配下に、下記のファイルが生成されます。
   - privateKey.pem  
 
 [Seller Central](https://sellercentral.amazon.co.jp/)にて、本サンプル用にアプリケーションを用意し、[こちら](https://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/get-set-up-for-integration.html#4-get-your-public-key-id)を参考に、Merchant ID, Public Key ID, Store ID, Private Keyを取得し、それぞれ下記にコピーします。
-  * Merchant ID: keys/keyinfo.rb の merchant_id
-  * Public Key ID: keys/keyinfo.rb の public_key_id
-  * Store ID: keys/keyinfo.rb の store_id
+  * Merchant ID: keys/keyinfo.rb の MERCHANT_ID
+  * Public Key ID: keys/keyinfo.rb の PUBLIC_KEY_ID
+  * Store ID: keys/keyinfo.rb の STORE_ID
   * Private Key: keys/privateKey.pem
 
 ### 依存モジュールのインストール
