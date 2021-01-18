@@ -39,7 +39,7 @@ Example:
 
 ## Others
 
-Invoke 'call_api' method specifying the parameters below:  
+Invoke 'api_call' method specifying the parameters below:  
  - url_fragment: the last part of the URL of the API. ex) 'checkoutSessions' if the URL is 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/'
  - method: the HTTP method of the API.
  - (Optional) payload: the request payload of the API. You can specify either JSON string or Hash instance. 

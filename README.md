@@ -110,7 +110,7 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
 
 ### その他のAPIの呼び出し
 
-下記パラメタを指定して、'call_api'を呼び出します。  
+下記パラメタを指定して、'api_call'を呼び出します。  
  - url_fragment: API呼出のURLの末尾部分。 例) 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/' の場合、「checkoutSessions」
  - method: API呼出のHTTP method
  - (Optional) payload: API呼出のrequest payload。JSON string でも Hashインスタンス でも可。  
