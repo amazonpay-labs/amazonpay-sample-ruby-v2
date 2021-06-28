@@ -172,7 +172,7 @@ class AmazonPayClient
         end
     
         def to_query(query_params)
-            query_params.map{|k, v| [k.to_s, url_encode(v)]}.sort_by{|kv| kv[0]}.map{|kv| "#{kv[0]}=#{kv[1]}"}.join('&')
+            query_params.map{|k, v| [url_encode(k.to_s), url_encode(v)]}.sort_by{|kv| kv[0]}.map{|kv| "#{kv[0]}=#{kv[1]}"}.join('&')
         end
     
         def hex_and_hash(data)
