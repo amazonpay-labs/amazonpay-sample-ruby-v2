@@ -1,104 +1,124 @@
-# Ruby版 Amazon Pay v2 サンプルアプリケーション
-下記Amazon Pay v2の、Ruby版サンプルアプリケーションです。  
-http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/introduction.html
+# Amazon Pay v2 sample application for Ruby
 
-## 動作環境
-Ruby 2.3.0 以上  
-Note: 2.5.0 未満の場合、「openssl」のGemを下記指示にしたがって更新する必要があります。  
-https://github.com/ruby/openssl  
+This is a sample application of the following Amazon Pay v2 for Ruby.
+https://developer.amazon.com/ja/docs/amazon-pay-checkout/introduction.html
 
-## 概要
-本アプリケーションでは、下記のようにAmazon Payでの単純な購入フローを実行するサンプルを提供しています。  
+## Requirements
 
-<img src="images/checkout-flow.gif" width="350">  
+Ruby 2.3.0 or higher
+Note: If you have less than 2.5.0, you will need to update the "openssl" gem according to the instructions below.
+https://github.com/ruby/openssl
 
-## インストール
+## Overview
 
-### リポジトリのclone
-本リポジトリをcloneします。  
+This application provides a sample that executes a simple checkout flow with Amazon Pay as shown movie below.
+
+<img src="images/checkout-flow.gif" width="350">
+
+## Installation
+
+### Clone the repository
+
+You will clone this repository.
+
 ```sh
 git clone https://github.com/amazonpay-labs/amazonpay-sample-ruby-v2.git
 
-# cloneしたリポジトリへ移動
+# Go to the repository you cloned
 cd amazonpay-sample-ruby-v2
 ```
 
-### Seller Centralでのアプリケーション作成・設定
-下記コマンドにて、Rubyスクリプトを実行します。  
+### Create and configure your application in Seller Central
+
+Run Ruby script with the following command.
+
 ```sh
 ruby keys/init.rb
 ```
 
-keysディレクトリ配下に、下記のファイルが生成されます。  
-  - keyinfo.rb  
-  - privateKey.pem  
+The following files will be created under the keys directory.
 
-[Seller Central](https://sellercentral.amazon.co.jp/)にて、本サンプル用にアプリケーションを用意し、[こちら](https://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/get-set-up-for-integration.html#4-get-your-public-key-id)を参考に、Merchant ID, Public Key ID, Store ID, Private Keyを取得し、それぞれ下記にコピーします。
-  * Merchant ID: keys/keyinfo.rb の MERCHANT_ID
-  * Public Key ID: keys/keyinfo.rb の PUBLIC_KEY_ID
-  * Store ID: keys/keyinfo.rb の STORE_ID
-  * Private Key: keys/privateKey.pem
+- keyinfo.rb
+- privateKey.pem
 
-### 依存モジュールのインストール
-本ディレクトリにて、下記のコマンドを実行して依存モジュールをインストールします。
+Prepare an application for this sample at [Seller Central](https://sellercentral.amazon.co.jp/) and click [here](https://developer.amazon.com/ja/docs/amazon-pay-checkout/get-set-up-for-integration.html) to obtain the Merchant ID, Public Key ID, Store ID, Store ID, and Private Key, respectively, and copy them to the following
 
-#### Bundlerを使用する場合
+- Merchant ID: MERCHANT_ID in keys/keyinfo.rb
+- Public Key ID: PUBLIC_KEY_ID in keys/keyinfo.rb
+- Store ID: STORE_ID in keys/keyinfo.rb
+- Private Key: keys/privateKey.pem
+
+### Install dependent modules
+
+In this directory, execute the following command to install the dependent modules.
+
+#### If you use Bundler
+
 ```sh
 bundle install
 ```
 
-#### RubyGemsを使用する場合
+#### If you use RubyGems
+
 ```sh
-# 注意！ ↓↓↓ Rubyのバージョンが2.5.0未満の場合のみ ↓↓↓
+# Note! ↓↓↓ Only if your Ruby version is less than 2.5.0
 gem install openssl
-# 注意！ ↑↑↑ Rubyのバージョンが2.5.0未満の場合のみ ↑↑↑
-# また、https://github.com/ruby/openssl にも書かれている通り、2.3の場合には更にソースで「gem 'openssl'」を実行してgemを有効化する必要もあります。
-# 本アプリケーションでは、libs/signature.rbのコードの先頭でこの処理を実行しています。
+# Note! ↑↑↑ Only if your Ruby version is less than 2.5.0 ↑↑↑↑.
+# You also need to enable the gem by running "gem 'openssl'" in the source further in the case of 2.3, as described in https://github.com/ruby/openssl.
+# In this application, this is done at the top of the code in libs/signature.rb.
 
 gem install sinatra
 ```
 
-## サーバーの起動
-本ディレクトリにて、下記コマンドを実行します。
+## Launch the server
+
+Execute the following command in this directory.
+
 ```sh
 ruby app.rb
 ```
 
-[http://localhost:4567/](http://localhost:4567/) にアクセスして、動作を確認します。
+Access [http://localhost:4567/](http://localhost:4567/) to check running.
 
-# 本アプリケーションの構成
+# Configuration of this application
 
-本アプリケーションは主に下記3つのrbファイルで構成されています。  
+This application mainly consists of the following three rb files.
 
 ## app.rb
-Webアプリの本体です。[Sinatra](http://sinatrarb.com/)で実装されており、100行弱程度です。
+
+This is the main body of the web application. It is implemented in [Sinatra](http://sinatrarb.com/) and is less than 100 lines long.
 
 ## keys/keyinfo.rb
-各種設定値のみが定義された設定ファイルです。
+
+This is a configuration file in which only various configuration values are defined.
 
 ## libs/signature.rb
-Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約120行あります。  
-ファイルの先頭にサンプルコードの使い方を英語で示しており、下記はその日本語訳です。 
 
---- 
+This is a sample that shows how to call the Amazon Pay API, and has about 120 lines of code.
 
-最初に、下記のようにAmazonPayClientをインスタンス化します。:  
+---
+
+First, instantiate the AmazonPayClient as shown below:
+
 ```ruby
     client = AmazonPayClient.new {
-        public_key_id: 'XXXXXXXXXXXXXXXXXXXXXXXX', # SellerCentralで取得したpublick key ID
-        private_key: File.read('./privateKey.pem'), # SellerCentralで取得したprivate key
-        region: 'jp', # 'na', 'eu', 'jp'が指定できます
+        public_key_id: 'XXXXXXXXXXXXXXXXXXXXXXXX', # publick key ID retrieved from SellerCentral
+        private_key: File.read('./privateKey.pem'), # private key retrieved by SellerCentral
+        region: 'jp', # 'na', 'eu', 'jp' can be specified
         sandbox: true
     }
 ```
 
-### Amazon PayボタンのSignatureの生成
-下記パラメタを指定して、'generate_button_signature'を呼び出します。
- - payload: APIに渡すpayload。JSON string でも Hashインスタンス でも可。  
+### Generate Signature for Amazon Pay button
 
-参照: http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/add-the-amazon-pay-button.html#3-sign-the-payload
+Call 'generate_button_signature' with the following parameters.
 
-例:  
+- payload: The payload to pass to the API, which can be a JSON string or a Hash instance.
+
+See: https://developer.amazon.com/ja/docs/amazon-pay-checkout/add-the-amazon-pay-button.html
+
+Example:
+
 ```ruby
     signature = client.generate_button_signature {
         webCheckoutDetails: {
@@ -108,18 +128,19 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
     }
 ```
 
-### その他のAPIの呼び出し
+### Other API calls
 
-下記パラメタを指定して、'api_call'を呼び出します。  
- - url_fragment: API呼出のURLの末尾部分。 例) 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/' の場合、「checkoutSessions」
- - method: API呼出のHTTP method
- - (Optional) payload: API呼出のrequest payload。JSON string でも Hashインスタンス でも可。  
- - (Optional) headers: API呼出のHTTP header。 例) {header1: 'value1', header2: 'value2'}
- - (Optional) query_params: API呼出のquery parameter。 例) {param1: 'value1', param2: 'value2'}  
+Call 'api_call' with the following parameters.
 
-Amazon Pay API呼出結果のresponseが返却されます。  
+- url_fragment: The last part of the URL of the API call. e.g.) For 'https://pay-api.amazon.com/:environment/:version/checkoutSessions/', "checkoutSessions".
+- method: HTTP method of the API call
+- (Optional) payload: The request payload of the API call, which can be a JSON string or a Hash instance.
+- (Optional) headers: HTTP header of the API call. e.g.) {header1: 'value1', header2: 'value2'}
+- (Optional) query_params: The query parameter of the API call. Example) {param1: 'value1', param2: 'value2'}
 
-例1: [Create Checkout Session](http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#create-checkout-session)  
+The response of the Amazon Pay API call result will be returned.
+
+Example 1: [Create Checkout Session](https://developer.amazon.com/ja/docs/amazon-pay-api-v2/checkout-session.html)
 
 ```ruby
     response = client.api_call ("checkoutSessions", "POST",
@@ -133,7 +154,7 @@ Amazon Pay API呼出結果のresponseが返却されます。
     )
 ```
 
-例2: [Get Checkout Session](http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-api-v2/checkout-session.html#get-checkout-session)  
+Example 2: [Get Checkout Session](https://developer.amazon.com/ja/docs/amazon-pay-api-v2/checkout-session.html)
 
 ```ruby
     response = client.api_call ("checkoutSessions/#{amazon_checkout_session_id}", 'GET')
