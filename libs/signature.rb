@@ -129,7 +129,7 @@ class AmazonPayClient
             @public_key_id = get :public_key_id, config
             @private_key = get :private_key, config
             @amazon_signature_algorithm = (get :amazon_signature_algorithm, config) || "AMZN-PAY-RSASSA-PSS"
-            @salt_length = @amazon_signature_algorithm === "AMZN-PAY-RSASSA-PSS" ? 20 : 32
+            @salt_length = @amazon_signature_algorithm == "AMZN-PAY-RSASSA-PSS" ? 20 : 32
             @base_url = "https://#{endpoint}/#{get(:sandbox, config) ? 'sandbox' : 'live'}/#{API_VERSION}/"
         end
 
