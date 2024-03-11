@@ -16,10 +16,15 @@ At first, instantiate AmazonPayClient like below:
     client = AmazonPayClient.new {
         public_key_id: 'XXXXXXXXXXXXXXXXXXXXXXXX', # the publick key ID you obtained at seller central
         private_key: File.read('./privateKey.pem'), # the private key you obtained at seller central
+        amazon_signature_algorithm: 'AMZN-PAY-RSASSA-PSS-V2', # Optional. Default: 'AMZN-PAY-RSASSA-PSS'
         region: 'jp', # you can specify 'na', 'eu' or 'jp'.
         sandbox: true
     }
 ```
+
+> [!NOTE]
+If you specify 'AMZN-PAY-RSASSA-PSS-V2' as 'amazon_signature_algorithm', you have to specify same algorithm on Amazon Pay's button script as well by following the page below:
+https://developer.amazon.com/docs/amazon-pay-checkout/amazon-pay-script.html
 
 ## To generate button signature
 Invoke 'generate_button_signature' specifying the parameters below:  
@@ -115,7 +120,6 @@ class AmazonPayClient
         'DELETE' => Net::HTTP::Delete
     }
     HASH_ALGORITHM = "SHA256"
-    AMAZON_SIGNATURE_ALGORITHM = "AMZN-PAY-RSASSA-PSS"
     
     class Helper
         attr_reader :base_url
@@ -124,6 +128,8 @@ class AmazonPayClient
             @region = get :region, config
             @public_key_id = get :public_key_id, config
             @private_key = get :private_key, config
+            @amazon_signature_algorithm = (get :amazon_signature_algorithm, config) || "AMZN-PAY-RSASSA-PSS"
+            @salt_length = @amazon_signature_algorithm === "AMZN-PAY-RSASSA-PSS" ? 20 : 32
             @base_url = "https://#{endpoint}/#{get(:sandbox, config) ? 'sandbox' : 'live'}/#{API_VERSION}/"
         end
 
@@ -160,15 +166,15 @@ class AmazonPayClient
                 #{hex_and_hash(payload)}
             EOS
             signed_headers = "SignedHeaders=#{canonical_header_names}, Signature=#{sign canonical_request}"
-            headers['authorization'] = "#{AMAZON_SIGNATURE_ALGORITHM} PublicKeyId=#{@public_key_id}, #{signed_headers}"
+            headers['authorization'] = "#{@amazon_signature_algorithm} PublicKeyId=#{@public_key_id}, #{signed_headers}"
     
             headers
         end
     
         def sign string_to_sign
-            hashed_canonical_request = "#{AMAZON_SIGNATURE_ALGORITHM}\n#{hex_and_hash(string_to_sign)}"
+            hashed_canonical_request = "#{@amazon_signature_algorithm}\n#{hex_and_hash(string_to_sign)}"
             rsa = OpenSSL::PKey::RSA.new @private_key
-            Base64.strict_encode64(rsa.sign_pss(HASH_ALGORITHM, hashed_canonical_request, salt_length: 20, mgf1_hash: HASH_ALGORITHM))
+            Base64.strict_encode64(rsa.sign_pss(HASH_ALGORITHM, hashed_canonical_request, salt_length: @salt_length, mgf1_hash: HASH_ALGORITHM))
         end
     
         def to_query(query_params)

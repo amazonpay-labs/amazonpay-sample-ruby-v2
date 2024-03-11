@@ -8,6 +8,7 @@ require 'securerandom'
 config = {
     region: 'jp',
     public_key_id: KeyInfo::PUBLIC_KEY_ID,
+    amazon_signature_algorithm: KeyInfo::AMAZON_SIGNATURE_ALGORITHM,
     private_key: File.read('./keys/privateKey.pem'),
     sandbox: true
 }
@@ -29,6 +30,7 @@ get '/cart' do
         merchant_id: KeyInfo::MERCHANT_ID,
         payload: payload,
         signature: client.generate_button_signature(payload), # Sign the payload
+        amazon_signature_algorithm: KeyInfo::AMAZON_SIGNATURE_ALGORITHM,
         public_key_id: KeyInfo::PUBLIC_KEY_ID
     }
 end

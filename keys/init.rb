@@ -6,6 +6,7 @@ open __dir__ + '/keyinfo.rb', 'w' do |f|
             MERCHANT_ID = 'XXXXXXXXXXXX'
             PUBLIC_KEY_ID = 'XXXXXXXXXXXXXXXXXXXXXXXXX'
             STORE_ID = 'amzn1.application-oa2-client.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+            AMAZON_SIGNATURE_ALGORITHM = 'AMZN-PAY-RSASSA-PSS-V2'
         end
     EOS
 end

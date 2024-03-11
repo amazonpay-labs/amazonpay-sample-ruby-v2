@@ -1,6 +1,6 @@
 # Ruby版 Amazon Pay v2 サンプルアプリケーション
 下記Amazon Pay v2の、Ruby版サンプルアプリケーションです。  
-http://amazonpaycheckoutintegrationguide.s3.amazonaws.com/amazon-pay-checkout/introduction.html
+https://developer.amazon.com/ja/docs/amazon-pay/intro.html
 
 ## 動作環境
 Ruby 2.3.0 以上  
@@ -38,6 +38,8 @@ keysディレクトリ配下に、下記のファイルが生成されます。
   * Public Key ID: keys/keyinfo.rb の PUBLIC_KEY_ID
   * Store ID: keys/keyinfo.rb の STORE_ID
   * Private Key: keys/privateKey.pem
+
+また、「AMAZON_SIGNATURE_ALGORITHM」の値として最初から「AMZN-PAY-RSASSA-PSS-V2」が指定されています。必要に応じて前バージョンの「AMZN-PAY-RSASSA-PSS」も指定できますが、通常はそのままで問題ないです。
 
 ### 依存モジュールのインストール
 本ディレクトリにて、下記のコマンドを実行して依存モジュールをインストールします。
@@ -87,10 +89,15 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
     client = AmazonPayClient.new {
         public_key_id: 'XXXXXXXXXXXXXXXXXXXXXXXX', # SellerCentralで取得したpublick key ID
         private_key: File.read('./privateKey.pem'), # SellerCentralで取得したprivate key
+        amazon_signature_algorithm: 'AMZN-PAY-RSASSA-PSS-V2', # Signature計算用アルゴリズム名. 任意項目. デフォルト値: 'AMZN-PAY-RSASSA-PSS'
         region: 'jp', # 'na', 'eu', 'jp'が指定できます
         sandbox: true
     }
 ```
+
+> [!NOTE]
+「amazon_signature_algorithm」の値として「AMZN-PAY-RSASSA-PSS-V2」を指定した場合、下記リンク先に従ってAmazon Pay描画のscriptでも同じアルゴリズム名を指定する必要があります。
+https://developer.amazon.com/docs/amazon-pay-checkout/amazon-pay-script.html
 
 ### Amazon PayボタンのSignatureの生成
 下記パラメタを指定して、'generate_button_signature'を呼び出します。

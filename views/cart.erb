@@ -69,6 +69,7 @@
         createCheckoutSessionConfig: {
             payloadJSON: '<%= payload %>', // string generated in step 2
             signature: '<%= signature %>', // signature generated in step 3
+            <%= amazon_signature_algorithm === 'AMZN-PAY-RSASSA-PSS-V2' ? "algorithm : '#{amazon_signature_algorithm}'," : '' %>
             publicKeyId: '<%= public_key_id %>' 
         }
     });
