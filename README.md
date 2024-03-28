@@ -96,7 +96,7 @@ Amazon Pay APIの呼出方法を示したサンプルで、コード部分が約
 ```
 
 > [!NOTE]
-「amazon_signature_algorithm」の値として「AMZN-PAY-RSASSA-PSS-V2」を指定した場合、下記リンク先に従ってAmazon Pay描画のscriptでも同じアルゴリズム名を指定する必要があります。
+「amazon_signature_algorithm」の値として「AMZN-PAY-RSASSA-PSS-V2」を指定した場合、下記リンク先に従ってAmazon Payボタン描画のscriptでも同じアルゴリズム名を指定する必要があります。
 https://developer.amazon.com/docs/amazon-pay-checkout/amazon-pay-script.html
 
 ### Amazon PayボタンのSignatureの生成
